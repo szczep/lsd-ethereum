@@ -19,6 +19,8 @@ You can request some free ether for the rinkeby test network [here](https://www.
     	
 Download solidity compiler for windows from [here](https://github.com/ethereum/solidity/releases).
 
+You can use online compiler like [remix](https://remix.ethereum.org/).
+
 Compile smartContract:
 
 ```web3j solidity generate -b <smart_contract>.bin -a <smart_contract>.abi -o src/main/java -p <package_name>```
