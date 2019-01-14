@@ -23,4 +23,8 @@ You can use online compiler like [remix](https://remix.ethereum.org/).
 
 Compile smartContract:
 
+```solc Greeting.sol --bin --abi --optimize -o <output_dir>/```
+
+Generate java code based on compiled contract:
+
 ```web3j solidity generate -b <smart_contract>.bin -a <smart_contract>.abi -o src/main/java -p <package_name>```
