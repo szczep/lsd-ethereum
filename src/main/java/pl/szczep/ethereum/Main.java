@@ -20,32 +20,46 @@ public class Main {
         Web3j web3j = connectToRemoteEthereumNode();
 
         Credentials credentials = loanWallet();
-//
-//        Greeting contract = deployContractToTheNetwork(web3j, credentials);
-//
-//        String contractAddress = contract.getContractAddress();
-//
-//        System.out.println(contractAddress);
 
-        Greeting contract = new Greeting("0xB392FAc952E84b92f76CD2b2E4A07906c05d7105",
-                web3j, credentials, new DefaultGasProvider());
+//        Greeting contract = deployContractToTheNetwork(web3j, credentials, "Hello blockchain world!");
 
-        TransactionReceipt transactionReceipt = contract.setGreeting("Hello again").send();
 
-        String newValue = contract.greet().send();
-        System.out.println(newValue);
+        System.out.println(getGreetingsFromContract(web3j, credentials));
+
+        TransactionReceipt transactionReceipt = setGreetingsForContract(web3j, credentials, "Hello again");
+
+        System.out.println(getGreetingsFromContract(web3j, credentials));
 
     }
 
-    private static Greeting deployContractToTheNetwork(Web3j web3j, Credentials credentials) throws Exception {
+    private static String getGreetingsFromContract(Web3j web3j, Credentials credentials) throws Exception {
+        return getGreeting(web3j, credentials).greet().send();
+    }
 
-        return Greeting.deploy(web3j, credentials, new DefaultGasProvider(), "Hello blockchain world!").send();
+    private static TransactionReceipt setGreetingsForContract(Web3j web3j, Credentials credentials, String  message) throws Exception {
+        return getGreeting(web3j, credentials).setGreeting(message).send();
+    }
+
+    private static Greeting getGreeting(Web3j web3j, Credentials credentials) {
+        return new Greeting("0x675DA84d6a04E5A45897058218CE1885997c2bB9",
+                web3j, credentials, new DefaultGasProvider());
+    }
+
+    private static Greeting deployContractToTheNetwork(Web3j web3j, Credentials credentials, String message) throws Exception {
+        Greeting contract = Greeting.deploy(web3j,
+                credentials,
+                new DefaultGasProvider(),
+                message).send();
+
+        String contractAddress = contract.getContractAddress();
+        System.out.println(contractAddress);
+        return contract;
     }
 
     private static Credentials loanWallet() throws IOException, CipherException {
         return WalletUtils.loadCredentials(
-            "password",
-            "/home/szczepan/projects/UTC--2019-01-08T07-47-38.955000000Z--b860d954b1f1988dd557a195ec2e90fa100f6cbe.json");
+                "lsd",
+                "C:/git/lsd-ethereum/UTC--2019-01-24T18-56-51.941000000Z--d7da9a113eb6f05f1a3343505012c111c0385730.json");
     }
 
     private static Web3j connectToRemoteEthereumNode() {
